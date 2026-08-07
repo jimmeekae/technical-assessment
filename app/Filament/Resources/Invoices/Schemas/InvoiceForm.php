@@ -31,10 +31,10 @@ class InvoiceForm
                         $total = (float) $get('total_after_discount');
                         if ($total > 10000) {
                             return new HtmlString("
-                                <div class='p-3 mb-2 text-sm text-amber-800 rounded bg-amber-50 dark:bg-gray-800 dark:text-amber-400 font-semibold border border-amber-300' role='alert'>
-                                     Invoice will go for approval – Amount: " . number_format($total, 2) . " KES
-                                </div>
-                            ");
+                            <div style='background-color: #fef3c7; color: #92400e; border: 1px solid #fcd34d; padding: 12px; border-radius: 6px; font-size: 14px; font-weight: 600;' role='alert'>
+                                Invoice will go for approval – Amount: " . number_format($total, 2) . " KES
+                            </div>
+                        ");
                         }
                         return null;
                     })
