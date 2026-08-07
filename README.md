@@ -87,7 +87,7 @@ Send a `POST` request to `http://127.0.0.1:8000/api/mpesa/c2b/callback` via Post
     "MiddleName": "K",
     "LastName": "Doe"
 }
-
+```
 ### Expected Response (200 OK)
 ```json
 {
