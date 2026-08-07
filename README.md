@@ -1,59 +1,98 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# Technical Assessment - Invoices, Vehicle Gate Operations & M-Pesa C2B API
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+This repository contains the completed technical assessment built with **Laravel 12**, **Filament PHP (v5.7)**, and a custom **M-Pesa C2B API Callback Handler**.
 
-## About Laravel
+---
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+## Technical Stack & Requirements
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+* **PHP:** ^8.2
+* **Framework:** Laravel 12.x
+* **Admin Panel:** Filament  v5.7.5
+* **Database:** Microsoft Sql
+* **API Engine:** REST (JSON Payload handling)
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+---
 
-## Learning Laravel
+## Features & Completed Tasks
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework. You can also check out [Laravel Learn](https://laravel.com/learn), where you will be guided through building a modern Laravel application.
+### Task 1: Invoices Resource (Filament Panel)
+* **Database Architecture:** Models, Migrations, Factories, and Seeders for Customer Invoices.
+* **Management UI:** Full CRUD interface for creating invoices
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+### Task 2: Vehicle Gate Operations (Filament Panel)
+* **Database Architecture:** Models, Migrations, Factories, and Seeders for `Vehicles`, `Drivers`, `Customers`, and `VehicleGateLogs`.
+* **Dynamic Form Auto-Population:** Automatically retrieves and populates the Driver's National ID and Phone Number upon selecting a driver during **Gate In**.
+* **Audit Trails:** System automatically captures `gated_in_at`, `gated_in_by` (authenticated user), `gated_out_at`, and `gated_out_by`.
+* **Gate Out Workflow:** Table row actions and a dedicated top-header action to safely transition vehicles marked as `GATED_IN` to `GATED_OUT`.
 
-## Laravel Sponsors
+### Task 3: M-Pesa C2B API Callback
+* **REST Endpoint:** `POST /api/mpesa/c2b/callback`
+* **Data Persistence:** Extracts all callback fields (`TransID`, `TransAmount`, `MSISDN`, `BillRefNumber`, `FirstName`, `LastName`, etc.) into individual string columns in the `mpesa_c2b_transactions` table.
+* **Safaricom Compliant Response:** Returns structured JSON acknowledgment (`ResultCode: 0`, `ResultDesc: "Accepted"`).
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+---
 
-### Premium Partners
+## Quick Setup Instructions
 
-- **[Vehikl](https://vehikl.com)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Redberry](https://redberry.international/laravel-development)**
-- **[Active Logic](https://activelogic.com)**
+```bash
+# 1. Clone repository & install dependencies
+git clone [https://github.com/jimmeekae/technical-assessment.git](https://github.com/jimmeekae/technical-assessment.git)
+cd technical-assessment
+composer install
 
-## Contributing
+# 2. Configure environment
+cp .env.example .env
+php artisan key:generate
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+# 3. Set your db credentials
 
-## Code of Conduct
+# 4. Run database migrations and seed default data
+php artisan migrate --seed
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+# 5. Start local development server
+php artisan serve
 
-## Security Vulnerabilities
+## Admin Credentials & Dashboard Access
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+## Admin Credentials & Dashboard Access
 
-## License
+* **URL:** `http://127.0.0.1:8000/admin`
+* **Email:** `test@example.com`
+* **Password:** `password`
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+---
+
+## Testing M-Pesa C2B Callback API
+
+Send a `POST` request to `http://127.0.0.1:8000/api/mpesa/c2b/callback` via Postman, cURL, or HTTPie.
+
+### Request Headers
+* `Content-Type: application/json`
+* `Accept: application/json`
+
+### Sample Request Payload
+```json
+{
+    "TransactionType": "Pay Bill",
+    "TransID": "RKT1234567",
+    "TransTime": "20260806161400",
+    "TransAmount": "1500.00",
+    "BusinessShortCode": "600000",
+    "BillRefNumber": "INV-1002",
+    "InvoiceNumber": "INV-1002",
+    "OrgAccountBalance": "45000.00",
+    "ThirdPartyTransID": "",
+    "MSISDN": "254712345678",
+    "FirstName": "John",
+    "MiddleName": "K",
+    "LastName": "Doe"
+}
+
+### Expected Response (200 OK)
+```json
+{
+    "ResultCode": 0,
+    "ResultDesc": "Accepted",
+    "ThirdPartyTransID": "RKT1234567"
+}
