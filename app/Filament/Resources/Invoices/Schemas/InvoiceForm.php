@@ -31,7 +31,7 @@ class InvoiceForm
                         $total = (float) $get('total_after_discount');
                         if ($total > 10000) {
                             return new HtmlString("
-                            <div style='background-color: #fef3c7; color: #92400e; border: 1px solid #fcd34d; padding: 12px; border-radius: 6px; font-size: 14px; font-weight: 600;' role='alert'>
+                            <div style='background-color: #fef3c7;color: #92400e; border: 1px solid #fcd34d; padding: 12px; border-radius: 6px; font-size: 14px; font-weight: 600;' role='alert'>
                                 Invoice will go for approval – Amount: " . number_format($total, 2) . " KES
                             </div>
                         ");
