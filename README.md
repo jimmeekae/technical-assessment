@@ -53,7 +53,6 @@ php artisan migrate --seed
 # 5. Start local development server
 php artisan serve
 
-## Admin Credentials & Dashboard Access
 
 ## Admin Credentials & Dashboard Access
 
