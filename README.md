@@ -53,7 +53,7 @@ php artisan migrate --seed
 # 5. Start local development server
 php artisan serve
 
-
+```
 ## Admin Credentials & Dashboard Access
 
 * **URL:** `http://127.0.0.1:8000/admin`
